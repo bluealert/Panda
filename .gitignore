@@ -1,0 +1,8 @@
+.idea
+cmake-build-debug
+*.o
+*.a
+*.dylib
+.DS_Store
+build
+mybuild
