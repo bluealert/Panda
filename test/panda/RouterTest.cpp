@@ -24,16 +24,17 @@ TEST(RouterTest, TestPathMatch0) {
 TEST(RouterTest, TestPathMatch1) {
   Router::get().clear();
   ASSERT_EQ(Router::AddPathResult::OK,
-            Router::get().add(Method::GET, "hello///world//:param///:param",
+            Router::get().add(Method::GET, "/question/:qid/answer/:aid",
                               [](Context* c) {}));
   std::vector<std::string> names;
   std::vector<std::string> vals;
-  ASSERT_TRUE(Router::get().find(Method::GET, "/hello/world/1/2", names, vals));
+  // https://www.zhihu.com/question/270585819/answer/358219459
+  ASSERT_TRUE(Router::get().find(Method::GET, "/question/270585819/answer/358219459", names, vals));
   ASSERT_EQ(names.size(), 2);
-  ASSERT_EQ(names[0], "param");
-  ASSERT_EQ(names[1], "param");
-  ASSERT_EQ(vals[0], "1");
-  ASSERT_EQ(vals[1], "2");
+  ASSERT_EQ(names[0], "qid");
+  ASSERT_EQ(names[1], "aid");
+  ASSERT_EQ(vals[0], "270585819");
+  ASSERT_EQ(vals[1], "358219459");
 }
 
 TEST(RouterTest, TestPathAdd0) {
