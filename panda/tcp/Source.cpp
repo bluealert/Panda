@@ -15,7 +15,7 @@ template <typename EmitFunction>
 class TcpSession
     : public std::enable_shared_from_this<TcpSession<EmitFunction>> {
  public:
-  TcpSession(std::unique_ptr<ip::tcp::socket> sock, EmitFunction emit)
+  TcpSession(std::shared_ptr<ip::tcp::socket> sock, EmitFunction emit)
       : emit_(emit) {
     channel_ = std::make_shared<tcp::Channel>(std::move(sock));
   }
@@ -61,7 +61,7 @@ auto makeTcpSession(Socket&& socket, EmitFunction&& emit) {
 
 }  // namespace detail
 
-void Source::assign(std::unique_ptr<ip::tcp::socket> sock) {
+void Source::assign(std::shared_ptr<ip::tcp::socket> sock) {
   detail::makeTcpSession(std::move(sock), emit_)->start();
 }
 

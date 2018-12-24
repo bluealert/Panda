@@ -36,20 +36,20 @@ void Acceptor::run(std::string host, std::string service,
 }
 
 void Acceptor::doAccept() {
-  auto handler = [this](const error_code& ec) {
+  std::uint16_t index;
+  auto& ios = iosPool_.get(index);
+  auto sock = std::make_shared<ip::tcp::socket>(ios);
+  acceptor_.async_accept(*sock, [this, sock, index](const error_code& ec) {
     if (!ec) {
       LOG(INFO) << "Accept connection: "
-                << socket_->remote_endpoint().address().to_string() << ":"
-                << socket_->remote_endpoint().port();
-      handler_(std::move(socket_), index_);
+                << sock->remote_endpoint().address().to_string() << ":"
+                << sock->remote_endpoint().port();
+      handler_(sock, index);
     } else {
       LOG(ERROR) << "async_accept failed: " << ec.message();
     }
     doAccept();
-  };
-
-  socket_ = std::make_unique<ip::tcp::socket>(iosPool_.get(index_));
-  acceptor_.async_accept(*socket_, handler);
+  });
 }
 
 }  // namespace tcp

@@ -35,5 +35,5 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 add_subdirectory(third_party/picohttpparser)
 add_subdirectory(panda)
-add_subdirectory(test)
 add_subdirectory(examples)
+add_subdirectory(test)

@@ -7,10 +7,10 @@ namespace panda {
 class IOServicePool {
  public:
   void add(const std::shared_ptr<boost::asio::io_service> &ios);
-  boost::asio::io_service &get(std::size_t &index) const;
+  boost::asio::io_service &get(std::uint16_t &index);
 
  private:
-  mutable std::atomic<std::size_t> nextIOS_{0};
+  std::atomic<std::uint16_t> nextIOS_{0};
   std::vector<std::shared_ptr<boost::asio::io_service>> ioServices_;
 };
 

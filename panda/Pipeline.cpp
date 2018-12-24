@@ -117,7 +117,7 @@ void Pipeline::run() {
   ios_->run();
 }
 
-void Pipeline::assign(std::unique_ptr<ip::tcp::socket> socket) {
+void Pipeline::assign(std::shared_ptr<ip::tcp::socket> socket) {
   src_.assign(std::move(socket));
 }
 
