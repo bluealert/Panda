@@ -94,9 +94,9 @@ struct routeHTTP {
         msg.resp->error(http::Status::NotFound);
         break;
       }
-      auto ctx = std::make_unique<panda::Context>(
-          std::move(req), std::move(msg.resp), std::move(names),
-          std::move(vals));
+      auto ctx =
+          std::make_unique<panda::Context>(std::move(req), std::move(msg.resp),
+                                           std::move(names), std::move(vals));
       handler(ctx.get());
     }
   }
@@ -117,7 +117,7 @@ void Pipeline::run() {
   ios_->run();
 }
 
-void Pipeline::assign(std::shared_ptr<ip::tcp::socket> socket) {
+void Pipeline::assign(std::unique_ptr<ip::tcp::socket> socket) {
   src_.assign(std::move(socket));
 }
 

@@ -17,7 +17,7 @@ class Source {
  public:
   using value_type = SourceMsg;
 
-  void assign(std::shared_ptr<boost::asio::ip::tcp::socket> sock);
+  void assign(std::unique_ptr<boost::asio::ip::tcp::socket> sock);
 
   template <typename EmitFunction>
   void onMessage(EmitFunction emit) {

@@ -7,7 +7,7 @@ namespace tcp {
 using namespace boost::asio;
 using boost::system::error_code;
 
-Channel::Channel(std::shared_ptr<ip::tcp::socket> sock)
+Channel::Channel(std::unique_ptr<ip::tcp::socket> sock)
     : closed(false), attachment_(0), deleter_(nullptr), sock_(std::move(sock)) {
   error_code err;
   sock_->set_option(ip::tcp::no_delay{true}, err);

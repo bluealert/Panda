@@ -12,7 +12,7 @@ class Pipeline {
   Pipeline();
 
   void run();
-  void assign(std::shared_ptr<boost::asio::ip::tcp::socket> socket);
+  void assign(std::unique_ptr<boost::asio::ip::tcp::socket> socket);
   std::shared_ptr<boost::asio::io_service>& getIOService();
 
  private:

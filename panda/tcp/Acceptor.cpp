@@ -5,9 +5,6 @@
 namespace panda {
 namespace tcp {
 
-using namespace boost::asio;
-using boost::system::error_code;
-
 Acceptor::Acceptor(IOServicePool& iosPool)
     : iosPool_(iosPool), acceptor_(ios_) {}
 
@@ -38,14 +35,15 @@ void Acceptor::run(std::string host, std::string service,
 void Acceptor::doAccept() {
   std::uint16_t index;
   auto& ios = iosPool_.get(index);
-  auto sock = std::make_shared<ip::tcp::socket>(ios);
-  acceptor_.async_accept(*sock, [this, sock, index](const error_code& ec) {
+  sock_ = std::make_unique<ip::tcp::socket>(ios);
+  acceptor_.async_accept(*sock_, [this, index](const error_code& ec) {
     if (!ec) {
       LOG(INFO) << "Accept connection: "
-                << sock->remote_endpoint().address().to_string() << ":"
-                << sock->remote_endpoint().port();
-      handler_(sock, index);
+                << sock_->remote_endpoint().address().to_string() << ":"
+                << sock_->remote_endpoint().port();
+      handler_(std::move(sock_), error_code(), index);
     } else {
+      handler_(nullptr, ec, -1);
       LOG(ERROR) << "async_accept failed: " << ec.message();
     }
     doAccept();

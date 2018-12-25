@@ -5,6 +5,7 @@
 namespace panda {
 
 using namespace boost::asio;
+using boost::system::error_code;
 
 Panda::Panda(std::size_t concurrency) {
   google::InitGoogleLogging("Panda");
@@ -32,8 +33,8 @@ void Panda::run(const std::string &host, const std::string &service) {
     threads_.emplace_back([&pipeline]() { pipeline.run(); });
   }
   tcp::Acceptor acceptor(iosPool);
-  auto acceptHandler = [this](std::shared_ptr<ip::tcp::socket> sock,
-                              std::uint16_t index) {
+  auto acceptHandler = [this](std::unique_ptr<ip::tcp::socket> sock,
+                              const error_code &ec, std::uint16_t index) {
     pipelines_[index].assign(std::move(sock));
   };
   acceptor.run(host, service, acceptHandler);

@@ -7,8 +7,11 @@
 namespace panda {
 namespace tcp {
 
-using AcceptHandler = std::function<void(
-    std::shared_ptr<boost::asio::ip::tcp::socket>, std::uint16_t)>;
+using namespace boost::asio;
+using boost::system::error_code;
+
+using AcceptHandler = std::function<void(std::unique_ptr<ip::tcp::socket>,
+                                         const error_code& ec, std::uint16_t)>;
 
 class Acceptor {
  public:
@@ -23,7 +26,8 @@ class Acceptor {
   IOServicePool& iosPool_;
   AcceptHandler handler_;
   boost::asio::io_service ios_;
-  boost::asio::ip::tcp::acceptor acceptor_;
+  ip::tcp::acceptor acceptor_;
+  std::unique_ptr<ip::tcp::socket> sock_;
 };
 
 }  // namespace tcp

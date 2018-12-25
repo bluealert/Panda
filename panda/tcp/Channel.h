@@ -12,7 +12,7 @@ class Channel {
  public:
   using AttachmentDeleter = std::function<void(uint64_t)>;
 
-  explicit Channel(std::shared_ptr<boost::asio::ip::tcp::socket> sock);
+  explicit Channel(std::unique_ptr<boost::asio::ip::tcp::socket> sock);
 
   template <typename ReadHandler>
   void asyncRead(char* buf, size_t len, ReadHandler handler) {
@@ -57,7 +57,7 @@ class Channel {
   bool closed;
   uint64_t attachment_;
   AttachmentDeleter deleter_;
-  std::shared_ptr<boost::asio::ip::tcp::socket> sock_;
+  std::unique_ptr<boost::asio::ip::tcp::socket> sock_;
 };
 
 }  // namespace tcp
