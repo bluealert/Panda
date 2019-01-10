@@ -12,9 +12,5 @@ class Headers {
   static constexpr char ContentEncoding[] = "Content-Encoding";
 };
 
-constexpr char Headers::ContentType[];
-constexpr char Headers::ContentLength[];
-constexpr char Headers::ContentEncoding[];
-
 }  // namespace http
 }  // namespace panda

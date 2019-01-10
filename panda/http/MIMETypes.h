@@ -11,8 +11,5 @@ class MIMETypes {
   static constexpr char text_json[] = "text/json";
 };
 
-constexpr char MIMETypes::application_json[];
-constexpr char MIMETypes::text_json[];
-
 }  // namespace http
 }  // namespace panda
